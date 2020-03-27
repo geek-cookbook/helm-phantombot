@@ -4,6 +4,7 @@ on:
     branches:
       - '*'
       - '!edge'
+      - '!add-helm-chart' # remove this once merged
     tags:
       - '*'
   pull_request:
