@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "PhantomBot.fullname" . }}
+  labels:
+    {{- include "PhantomBot.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "PhantomBot.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "PhantomBot.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "PhantomBot.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 25000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- range $name, $claim := .Values.storage.claims }}
+            - name: {{ $.Chart.Name }}-{{ $name }}
+              mountPath: /opt/PhantomBot/{{ $name | replace "-" "/" }}
+            {{- end }}
+          env:
+            {{- range $k,$v := .Values.phantombot }}
+            - name: PHANTOMBOT_{{ $k | upper }}
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ include "PhantomBot.fullname" $ }}
+                  key: {{ $k }}
+            {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+
+  volumeClaimTemplates:
+    {{- range $name, $claim := .Values.storage.claims }}
+    - metadata:
+        name: {{ $.Chart.Name }}-{{ $name }}
+        labels:
+          {{- include "PhantomBot.selectorLabels" $ | nindent 10 }}
+      spec:
+        accessModes: [ {{ $claim.accessModes | default $.Values.storage.accessModes | quote }} ]
+        storageClassName: {{ $claim.storageClass | default $.Values.storage.storageClass }}
+        resources:
+          requests:
+            storage: {{ $claim.size }}
+    {{- end }}
+

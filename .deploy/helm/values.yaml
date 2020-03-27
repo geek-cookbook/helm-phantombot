@@ -1,0 +1,59 @@
+replicaCount: 1
+
+image:
+  repository: funkypenguin/phantombot
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 25000
+
+ingress:
+  enabled: true
+  annotations: {}
+  hosts:
+    - host: phantombot.local
+      paths: [/]
+  tls: []
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+storage:
+  storageClass: local-path
+  accessModes: ReadWriteOnce
+  claims:
+    addons:
+      size: 1Gi
+    config:
+      size: 1Gi
+    dbbackup:
+      size: 1Gi
+    logs:
+      size: 1Gi
+    scripts-custom:
+      size: 1Gi
+    scripts-discord-custom:
+      size: 1Gi
+    scripts-lang-custom:
+      size: 1Gi
+
+phantombot:
+  user: MyBotAccount
+  oauth: "oauth:youroauthtoken"
+  apioauth: "oauth:youroauthtoken"
+  channel: yourtwitchchannel
+  paneluser: "admin"
+  panelpassword: "admin"

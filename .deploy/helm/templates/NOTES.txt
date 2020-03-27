@@ -1,0 +1,12 @@
+{{- if not .Values.testing }}
+{{ include "PhantomBot.Logo" . }}
+{{- end}}
+You successfully installed PhantomBot to your Kubernetes Cluster!
+
+You can access it at the following links:
+
+{{- range $host := .Values.ingress.hosts }}
+{{- range $host.paths }}
+http{{- with $.Values.ingress.tls -}}s{{- end -}}://{{$host.host}}{{.}}
+{{- end }}
+{{- end }}

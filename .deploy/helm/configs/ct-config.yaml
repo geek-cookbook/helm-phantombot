@@ -1,0 +1,6 @@
+chart-repos:
+
+lint-conf: .ci/lint-config.yaml
+debug: true
+
+check-version-increment: false
