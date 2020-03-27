@@ -1,0 +1,29 @@
+apiVersion: v2
+name: phantombot
+description: PhantomBot is a Twitch chat bot powered by Java.
+type: application
+keywords:
+     - PhantomBot
+     - Discord Bot
+     - TwitchTV Bot
+     - Twitch
+     - twitch.tv
+     - discordapp
+     - Streamlabs
+
+# The version version should manually be bumped every release
+version: 0.0.1-dev1
+
+# The appVersion is automatically set to the output of `git describe`, and latest is used here so you automatially use the latest docker image
+appVersion: latest
+
+sources:
+    - https://github.com/PhantomBot/PhantomBot
+
+icon: https://avatars3.githubusercontent.com/u/16204955?s=200&v=4
+maintainers:
+    - name: HexF
+      email: charts-git@hexf.me
+      url: https://hexf.me/
+
+deprecated: false
