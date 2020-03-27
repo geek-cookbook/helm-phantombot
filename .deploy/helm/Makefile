@@ -20,8 +20,8 @@ $(OUTPUTDIR)/:
 $(OUTPUTDIR)/$(OUTPUTNAME): $(CHART) $(OUTPUTDIR)/
 	helm package $< --app-version $(APPVERSION) --destination $(word 2, $^)
 
-lint: $(CHART) configs/lint-config.yaml
+lint: $(CHART) ../../.ci/lint-config.yaml
 	ct lint --lint-conf $(word 2, $^) --charts $<
 
-test: $(CHART) configs/ct-config.yaml
+test: $(CHART) ../../.ci/ct-config.yaml
 	ct install --config $(word 2, $^) --charts $<
