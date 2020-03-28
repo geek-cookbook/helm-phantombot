@@ -2,5 +2,7 @@
 
 # Here we define every possible upstream repo our charts use in `requirements.yaml`
 lint-conf: .ci/lint-config.yaml
-  
+charts:
+  - ".deploy/helm"
+
 check-version-increment: false
