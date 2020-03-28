@@ -47,13 +47,13 @@ ingress:
 # Resources allocated to this pod 
 resources: {}
 
-# A selector to determin what nodes to place PhantomBot on (Don't change unless you need it to run on specific pods)
+# A selector to determine what nodes to place PhantomBot on (Don't change unless you need it to run on specific pods)
 nodeSelector: {}
 
 # Kubernetes Tollerations for the pod (https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
 tolerations: []
 
-
+# Determines whether multiple replicas should be able to run on the same node
 affinity: {}
 
 # Information about storage
