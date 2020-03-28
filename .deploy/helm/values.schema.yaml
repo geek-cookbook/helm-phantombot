@@ -1,0 +1,113 @@
+# Validate this schema using yamale (`yamale values.yaml -s values.schema.yaml`)
+
+# The number of replicas of PhantomBot to run (You shouldn't need more than 1)
+replicaCount: int(min=1)
+
+# Information about the image (Don't change unless you know exactly what you are doing)
+image:
+  # Image to pull from Docker Hub
+  repository: regex('^\S+/\S+$')
+  # Image pull policy
+  pullPolicy: enum('IfNotPresent', 'Always')
+
+# Image Pull Secrets (Not required unless you are hosting your own image)
+imagePullSecrets: list(required=False)
+
+# Name override - useful if `PhantomBot` is taken on your cluster
+nameOverride: str(min=0, max=63, required=False)
+
+# Full name override - Useful if you want to override DNS names
+fullnameOverride: str(min=0, max=63, required=False)
+
+# Security Contexts
+podSecurityContext: map(required=False)
+securityContext: map(required=False)
+
+# Information on the Service
+service:
+  # What type of service this is
+  type: enum('ClusterIP', 'NodePort', 'LoadBalancer', 'ExternalName')
+
+  # Port that will be exposed to display the PhantomBot Dashboard
+  port: int(min=1,max=65535)
+
+# Information on Ingress - Takes traffic from your domain (e.g. phantombot.tv) and routes it to PhantomBot
+ingress:
+  # Enabled Ingress
+  enabled: bool()
+  # Extra Annotations if you Ingress Controller requires them
+  annotations: map()
+  # List of hosts and paths to route to PhantomBot
+  hosts: list(include('ingressHost'))
+
+  # TLS Settings for HTTPS
+  tls: list()
+
+# Resources allocated to this pod
+resources: map(required=False)
+
+# A selector to determine what nodes to place PhantomBot on (Don't change unless you need it to run on specific pods)
+nodeSelector: map(required=False)
+
+# Kubernetes Tollerations for the pod (https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
+tolerations: list(required=False)
+
+# Determines whether multiple replicas should be able to run on the same node
+affinity: map(required=False)
+
+# Information about storage
+storage:
+  # Default storage class to use for all claims - Can be overriden per claim
+  storageClass: str()
+  # Default access mode to use for all claims - Can be overriden per claim
+  accessModes: enum('ReadWriteOnce', 'ReadWriteMany', 'ReadOnlyMany')
+
+  # List of claims to use
+  claims:
+    # Addons claim
+    addons: include('storageClaim')
+    # Config claim
+    config: include('storageClaim')
+    # DB Backup Claim
+    dbbackup: include('storageClaim')
+    # Logs Claim
+    logs: include('storageClaim')
+    # Custom Scripts claim
+    scripts-custom: include('storageClaim')
+    # Custom Discord Scripts claim
+    scripts-discord-custom: include('storageClaim')
+    # Custom Language Scripts
+    scripts-lang-custom: include('storageClaim')
+
+# PhantomBot Configuration
+phantombot:
+  # Bot Username
+  user: str()
+
+  # Bot OAuth Token (https://twitchapps.com/tmi/)
+  oauth: regex('^oauth:[\S]+$')
+
+  # Broadcast Channel OAuth Token (https://phantombot.tv/oauth/)
+  apioauth: regex('^oauth:[\S]+$')
+
+  # Broadcast Channel Name
+  channel: str()
+
+  # Web Interface Username
+  paneluser: str()
+
+  # Web Interface Password
+  panelpassword: str()
+
+---
+ingressHost:
+  # Host (e.g. phantombot.local or phantombot.tv)
+  host: str()
+  # Path - Usually / unless you want it on a custom path
+  paths: list(str())
+
+storageClaim:
+  # Size of the claim
+  size: regex('[0-9]+([EPTGMK]i?|m)')
+  storageClass: str(required=False)
+  accessModes: enum('ReadWriteOnce', 'ReadWriteMany', 'ReadOnlyMany',required=False)
