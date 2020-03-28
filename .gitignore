@@ -77,3 +77,4 @@ lib/
 
 # Dont allow helm testing files
 .deploy/helm/ci/*-values.yaml
+!.deploy/helm/ci/ci-values.yaml

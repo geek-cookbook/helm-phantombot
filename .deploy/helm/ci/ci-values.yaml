@@ -1,0 +1,32 @@
+#username: phantombotgithubci
+#password: ^cwbR$QeX&mBHx9&$zMvhnu&bm5&uA9XG4gDt2Bk^PMNZ
+
+# Please dont stream to this account - its purely here so CI will pass
+
+# Rename this file to username-values.yaml (NOTICE THE EXTRA a IN YAML)
+
+testing: true
+
+ingress:
+  hosts:
+    - host: phantombot.local
+      paths: [/]
+
+phantombot:
+  # Bot Username
+  user: phantombotgithubci
+
+  # Bot OAuth Token (https://twitchapps.com/tmi/)
+  oauth: "oauth:gqi6oqnjciwr9862wwyumqwou6yqgo"
+
+  # Broadcast Channel OAuth Token (https://phantombot.tv/oauth/)
+  apioauth: "oauth:49kl5izi9prncvlhhgy746sb5y2gas"
+
+  # Broadcast Channel Name
+  channel: phantombotgithubci
+
+  # Web Interface Username
+  paneluser: "admin"
+
+  # Web Interface Password
+  panelpassword: "admin"
