@@ -5,6 +5,7 @@ on:
     paths:
       - ".deploy/helm/**"
       - ".github/**"
+      - ".ci/**"
 
 jobs:
   lint-test:
