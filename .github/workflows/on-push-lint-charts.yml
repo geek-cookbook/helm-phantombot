@@ -1,10 +1,10 @@
 name: Lint and Test Charts
 
-on: 
+on:
   push:
     paths:
-      - 'charts/**'   
-      - '.github/**'            
+      - ".deploy/helm/**"
+      - ".github/**"
 
 jobs:
   lint-test:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-          
+
       - name: Run chart-testing (lint)
         id: lint
         uses: helm/chart-testing-action@v1.0.0-rc.1
