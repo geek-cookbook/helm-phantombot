@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - add-helm-chart
     paths:
       - ".deploy/helm/**"
       - ".github/**"
@@ -29,8 +30,8 @@ jobs:
       #     # The folder in which the helm charts are located
       #     charts-folder: charts
 
-      - name: Fetch history
-        run: git fetch --prune --unshallow
+      # - name: Fetch history
+      #   run: git fetch --prune --unshallow
 
       - name: Configure Git
         run: |
