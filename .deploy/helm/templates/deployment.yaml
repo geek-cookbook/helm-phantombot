@@ -1,11 +1,10 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "PhantomBot.fullname" . }}
   labels:
     {{- include "PhantomBot.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "PhantomBot.fullname" . }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -66,18 +65,9 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-
-  volumeClaimTemplates:
-    {{- range $name, $claim := .Values.storage.claims }}
-    - metadata:
-        name: {{ $.Chart.Name }}-{{ $name }}
-        labels:
-          {{- include "PhantomBot.selectorLabels" $ | nindent 10 }}
-      spec:
-        accessModes: [ {{ $claim.accessModes | default $.Values.storage.accessModes | quote }} ]
-        storageClassName: {{ $claim.storageClass | default $.Values.storage.storageClass }}
-        resources:
-          requests:
-            storage: {{ $claim.size }}
-    {{- end }}
-
+      volumes:
+        {{- range $name, $claim := .Values.storage.claims }}
+        - name: {{ $.Chart.Name }}-{{ $name }}
+          persistentVolumeClaim:
+            claimName: {{ $.Chart.Name }}-{{ $name }}
+        {{- end }}
