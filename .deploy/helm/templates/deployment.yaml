@@ -41,9 +41,10 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            {{- range $name, $claim := .Values.storage.claims }}
-            - name: {{ $.Chart.Name }}-{{ $name }}
-              mountPath: /opt/PhantomBot/{{ $name | replace "-" "/" }}
+            {{- range .Values.storage.subpaths }}
+            - name: {{ $.Chart.Name }}
+              mountPath: /opt/PhantomBot/{{ . }}
+              subPath: {{ . }}
             {{- end }}
           env:
             {{- range $k,$v := .Values.phantombot }}
@@ -66,8 +67,6 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-        {{- range $name, $claim := .Values.storage.claims }}
-        - name: {{ $.Chart.Name }}-{{ $name }}
+        - name: {{ $.Chart.Name }}
           persistentVolumeClaim:
-            claimName: {{ $.Chart.Name }}-{{ $name }}
-        {{- end }}
+            claimName: {{ $.Chart.Name }}

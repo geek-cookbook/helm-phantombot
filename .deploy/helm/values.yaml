@@ -62,37 +62,17 @@ storage:
   storageClass: local-path
   # Default access mode to use for all claims - Can be overriden per claim
   accessModes: ReadWriteOnce
+  size: 1Gi
 
-  # List of claims to use
-  claims:
-    # Addons claim
-    addons:
-      # Size of the claim
-      size: 1Gi
-    # Config claim
-    config:
-      # Size of the claim
-      size: 1Gi
-    # DB Backup Claim
-    dbbackup:
-      # Size of the claim
-      size: 1Gi
-    # Logs Claim
-    logs:
-      # Size of the claim
-      size: 1Gi
-    # Custom Scripts claim
-    scripts-custom:
-      # Size of the claim
-      size: 1Gi
-    # Custom Discord Scripts claim
-    scripts-discord-custom:
-      # Size of the claim
-      size: 1Gi
-    # Custom Language Scripts
-    scripts-lang-custom:
-      # Size of the claim
-      size: 1Gi
+  # List of subpaths to mount to persistent storage
+  subpaths:
+    - addons
+    - config
+    - dbbackup
+    - logs
+    - scripts-custom
+    - scripts-discord-custom
+    - scripts-lang-custom
 
 # PhantomBot Configuration
 phantombot:

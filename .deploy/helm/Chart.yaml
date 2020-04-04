@@ -25,6 +25,9 @@ maintainers:
     - name: HexF
       email: charts-git@hexf.me
       url: https://hexf.me/
+    - name: funkypenguin
+      email: davidy@funkypenguin.co.nz
+      url: https://www.funkypenguin.co.nz     
 
 deprecated: false
 home: https://phantombot.tv
