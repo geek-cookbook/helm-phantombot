@@ -12,7 +12,7 @@ keywords:
      - Streamlabs
 
 # The version version should manually be bumped every release
-version: 0.0.1-dev3
+version: 0.0.1-dev4
 
 # The appVersion is automatically set to the output of `git describe`, and latest is used here so you automatially use the latest docker image
 appVersion: latest
