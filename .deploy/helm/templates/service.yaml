@@ -7,9 +7,17 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.service.dashboard.port }}
       targetPort: http
       protocol: TCP
       name: http
+    - port: {{ .Values.service.youtube_websocket_api.port }}
+      targetPort: http-yt-socket
+      protocol: TCP
+      name: http-yt-socket
+    - port: {{ .Values.service.webpanel_websocket_api.port }}
+      targetPort: http-wp-socket
+      protocol: TCP
+      name: http-wp-socket
   selector:
     {{- include "PhantomBot.selectorLabels" . | nindent 4 }}

@@ -30,6 +30,12 @@ spec:
             - name: http
               containerPort: 25000
               protocol: TCP
+            - name: http-yt-socket
+              containerPort: 25003
+              protocol: TCP   
+            - name: http-ws-socket
+              containerPort: 25004
+              protocol: TCP                            
           livenessProbe:
             httpGet:
               path: /
