@@ -26,20 +26,8 @@ service:
   # What type of service this is
   type: ClusterIP
 
-  dashboard:
-    # Port that will be exposed to display the PhantomBot Dashboard
-    port: 25000
-
-  youtube_websocket_api:
-    # Port that will be exposed for the youtube websocket api
-    # See https://community.phantom.bot/t/youtube-websocket-api/82
-    port: 25003
-
-  webpanel_websocket_api:
-    # Port that will be exposed for the webpanel websocket api
-    # See https://community.phantom.bot/t/web-panel-websocket-api/81
-    port: 25004   
-
+  # Port that will be exposed to display the PhantomBot Dashboard
+  port: 25000
 
 # Information on Ingress - Takes traffic from your domain (e.g. phantombot.tv) and routes it to PhantomBot
 ingress:
