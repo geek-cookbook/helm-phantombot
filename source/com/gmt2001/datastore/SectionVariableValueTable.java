@@ -90,8 +90,7 @@ public final class SectionVariableValueTable extends TableImpl<SectionVariableVa
             tableName = "phantombot_" + tableName;
         }
         return TABLES.computeIfAbsent(tableName, lTableName -> {
-            Optional<Table<?>> cTable = Datastore2.instance().tables().stream()
-                    .filter(t -> t.getName().equalsIgnoreCase(lTableName)).findFirst();
+            Optional<Table<?>> cTable = DataStore.instance().findTable(lTableName);
 
             if (cTable.isPresent()) {
                 return new SectionVariableValueTable(cTable.get().getName(), cTable.get().field(0).getName(),
@@ -245,25 +244,21 @@ public final class SectionVariableValueTable extends TableImpl<SectionVariableVa
         if (this.tableName.equals("EMPTY")) {
             return;
         }
+       
+        try {
+            this.createTable(this.tableName);
 
-        Optional<Table<?>> table = Datastore2.instance().findTable(this.tableName);
+            Datastore2.instance().invalidateTableCache();
+        } catch (Exception ex) {
+            com.gmt2001.Console.err.printStackTrace(ex);
+        }
 
-        if (!table.isPresent()) {
-            try {
-                this.createTable(this.tableName);
-
-                Datastore2.instance().invalidateTableCache();
-            } catch (Exception ex) {
-                com.gmt2001.Console.err.printStackTrace(ex);
-            }
-
-            try {
-                TableVersionRecord record = new TableVersionRecord();
-                record.values(this.tableName, SectionVariableValueRecord.serialVersionUID);
-                record.merge();
-            } catch (Exception ex) {
-                com.gmt2001.Console.err.printStackTrace(ex);
-            }
+        try {
+            TableVersionRecord record = new TableVersionRecord();
+            record.values(this.tableName, SectionVariableValueRecord.serialVersionUID);
+            record.merge();
+        } catch (Exception ex) {
+            com.gmt2001.Console.err.printStackTrace(ex);
         }
     }
 }

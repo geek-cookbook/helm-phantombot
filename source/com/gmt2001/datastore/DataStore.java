@@ -102,7 +102,11 @@ public sealed class DataStore permits H2Store, MySQLStore, MariaDBStore, SqliteS
      * @return an {@link Optional} which contains the matching {@link Table}, if found
      */
     public Optional<Table<?>> findTable(String fName) {
-        return Datastore2.instance().tables().stream().filter(t -> t.getName().equalsIgnoreCase("phantombot_" + fName)).findFirst();
+        if (fName.startsWith("phantombot_")) {
+            fName = fName.substring(11);
+        }
+        final String ffName = fName;
+        return Datastore2.instance().tables().stream().filter(t -> t.getName().equalsIgnoreCase("phantombot_" + ffName)).findFirst();
     }
 
     /**
@@ -133,7 +137,7 @@ public sealed class DataStore permits H2Store, MySQLStore, MariaDBStore, SqliteS
      * @return an array of table names
      */
     public String[] GetFileList() {
-        return dsl().meta().getTables().stream().filter(t -> t.getName().toLowerCase().startsWith("phantombot_"))
+        return Datastore2.instance().meta().getTables().stream().filter(t -> t.getName().toLowerCase().startsWith("phantombot_"))
             .map(t -> t.getName().replaceFirst("(?i)phantombot_", "")).collect(Collectors.toList()).toArray(new String[0]);
     }
 
